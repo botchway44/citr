@@ -1,7 +1,9 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 // import Pet from "./Pet"
-import SearchParams from "./SearchParams"
+import SearchParams from "./pages/SearchParams"
+import DetailsPage from "./pages/Details"
+import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 
 
 // const App = () => {
@@ -28,18 +30,25 @@ import SearchParams from "./SearchParams"
 //   ]);
 // };
 
-
+/* <Pet name= "Luna" animal= "Dog" breed= "Havenese" />
+      <Pet name= "Pepper" animal= "Bird" breed= "Cockatiel" />
+      <Pet name= "Doink" animal= "Cat" breed= "Mixed" /> */
 const App = () => {
 
   return (
-    <div>
-      <h1>Adopt Me</h1>
-
-      <SearchParams />
-      {/* <Pet name= "Luna" animal= "Dog" breed= "Havenese" />
-      <Pet name= "Pepper" animal= "Bird" breed= "Cockatiel" />
-      <Pet name= "Doink" animal= "Cat" breed= "Mixed" /> */}
-    </div>
+    <BrowserRouter>
+    <header>
+      <Link to="/" >
+         <h1>Adopt Me</h1>
+       </Link>
+    </header>
+      {/* <SearchParams /> */}
+ 
+ <Routes>
+    <Route path='/details/:id' element ={<DetailsPage />} />
+    <Route path='/' element ={<SearchParams />} />
+ </Routes>
+    </BrowserRouter>
   );
 
 }

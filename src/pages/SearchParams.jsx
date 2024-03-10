@@ -58,10 +58,8 @@ const SearchParams = () => {
               setAnimal(e.target.value);
             }}
           >
-            <option value=""></option>
-
-            {ANIMALS.map((animal) => {
-              return <option key={animal}>{animal}</option>;
+            {ANIMALS.map((_animal) => {
+              return <option value={_animal} key={_animal}>{_animal}</option>;
             })}
           </select>
         </label>

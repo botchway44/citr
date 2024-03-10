@@ -1,11 +1,18 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from '@tanstack/react-query';
 import fetchPet from '../query/fetchPet';
+import Carousel from "../components/Carousel"
+import ErrorBoundary from "../boundaries/ErrorBoundary";
+import Modal from "../components/Modal"
+import { useState } from 'react';
 
-const DetailsPage = () => {
+const DetailsPageContainer = () => {
+    const [showModal, setShowModal] = useState(false);
+
   const { id } = useParams();
   const result = useQuery(["details", id], fetchPet);
 
+ 
 
   if(result.isError){
     return ( <div>Error while fetching</div> );
@@ -22,13 +29,42 @@ const DetailsPage = () => {
   const pet = result.data.pets[0];
 
   return <div className="details">
+    <Carousel images={pet.images} />
     <div>
       <h1>{pet.name}</h1>
       <h2>{pet.animal} - { pet.breed} - {pet.city}, {pet.state}</h2>
-      <button>Adopt {pet.name}</button>
+      <button 
+      onClick={ () => setShowModal(true)}
+      > Adopt {pet.name}</button>
       <p>{pet.description}</p>
+
+       {
+      showModal ? (
+        <Modal>
+          <div>
+              <h1>Would you like to adopt {pet.name}</h1>
+              <div className='buttons'>
+                <button>Yes</button>
+                <button onClick={()=> setShowModal(false)}>No</button>
+              </div>
+          </div>
+        </Modal>
+      ) : (null)
+    }
+    
     </div>
+
+
   </div>;
 };
+
+function DetailsPage(props){
+
+  return (
+    <ErrorBoundary >
+      <DetailsPageContainer {...props} />
+     </ErrorBoundary>
+  )
+}
 
 export default DetailsPage;

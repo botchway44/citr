@@ -5,7 +5,7 @@ import SearchParams from "./pages/SearchParams";
 import DetailsPage from "./pages/Details";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useState } from 'react';
+import { useState,  } from 'react';
 
 import AdoptedPetContext from './context/AdoptedPetContext';
 

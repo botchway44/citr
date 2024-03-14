@@ -1,14 +1,16 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 // import Pet from "./Pet"
-import SearchParams from "./pages/SearchParams";
-import DetailsPage from "./pages/Details";
+// import SearchParams from "./pages/SearchParams";
+// import DetailsPage from "./pages/Details";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useState,  } from 'react';
-
+import { useState, lazy, Suspense } from 'react';
 import AdoptedPetContext from './context/AdoptedPetContext';
 
+
+const DetailsPageComponent = lazy(()=> import("./pages/Details"))
+const SearchParamsPageComponent = lazy(()=> import("./pages/SearchParams"))
 
 // const App = () => {
 //   return React.createElement("div", {}, [
@@ -55,6 +57,7 @@ const App = () => {
     <div className='p-0 m-0' style={{background: 'url(http://pets-images.dev-apis.com/pets/wallpaperC.jpg)'}}>
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
+        <Suspense fallback={ <div className='loading-pane'> <h2 className='loader'>Loading 🚀</h2> </div> }>
         <AdoptedPetContext.Provider value={adoptedPet}>
         <header className='w-full mb-10 text-center p-7 bg-gradient-to-b from-yellow-400 via-orange-500 to-red-500 '>
           <Link className='text-6xl ' to="/">
@@ -64,10 +67,11 @@ const App = () => {
         {/* <SearchParams /> */}
 
         <Routes>
-          <Route path="/details/:id" element={<DetailsPage />} />
-          <Route path="/" element={<SearchParams />} />
+          <Route path="/details/:id" element={<DetailsPageComponent />} />
+          <Route path="/" element={<SearchParamsPageComponent />} />
         </Routes>
         </AdoptedPetContext.Provider>
+        </Suspense>
       </QueryClientProvider>
     </BrowserRouter>
     </div>

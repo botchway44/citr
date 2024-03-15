@@ -33,5 +33,7 @@
         "extensions": [".js", ".jsx"]
       }
     }
-  }
+  },
+  "ignorePatterns": ["*.config.js"],
+
 }

@@ -3,9 +3,11 @@ import { useQuery } from '@tanstack/react-query';
 import fetchPet from '../query/fetchPet';
 import Carousel from "../components/Carousel"
 import ErrorBoundary from "../boundaries/ErrorBoundary";
-import Modal from "../components/Modal"
-import { useState, useContext } from 'react';
+import { useState, useContext, lazy } from 'react';
 import AdoptedPetContext from '../context/AdoptedPetContext';
+
+const Modal  = lazy( ()=> import("../components/Modal"));
+
 
 const DetailsPageContainer = () => {
   const navigate = useNavigate();

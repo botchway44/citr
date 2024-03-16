@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useMemo, useDeferredValue } from "react";
 import Results from "../components/Results";
 import useBreedList from "../hooks/useBreedList";
 const ANIMALS = ["bird", "cat", "dog", "rabbit", "reptile"];
@@ -26,6 +26,10 @@ const SearchParams = () => {
   const result = useQuery(["search", requestParams], fetchSearch);
 
   const pets = result?.data?.pets ?? [];
+
+
+  const defferedPets = useDeferredValue(pets);
+  const renderedPets = useMemo(()=> <Results pets={defferedPets} />, [defferedPets]);
 
   return (
     <div className="search-params">
@@ -94,7 +98,7 @@ const SearchParams = () => {
         <button type="submit">Submit</button>
       </form>
 
-      <Results pets={pets} />
+            {renderedPets}
     </div>
   );
 };

@@ -1,65 +1,59 @@
-import { Component } from 'react';
+import { Component } from "react";
 
-class Carousel extends Component{
-
+class Carousel extends Component {
   state = {
-    active : 0
-  }
-
+    active: 0,
+  };
 
   static defaultProps = {
-    images : ["http://pets-images.dev-apis.com/pets/none.jpg"]
-  }
-
+    images: ["http://pets-images.dev-apis.com/pets/none.jpg"],
+  };
 
   // componentDidMount(){
 
   // }
 
-  // componentDidUpdate(){ 
-
+  // componentDidUpdate(){
 
   // }
   // componentWillUnmount(){
 
   // }
 
-
   // shouldComponentUpdate(){
 
   // }
 
-
   handleIndexClick = (e) => {
     this.setState({
-      active : +e.target.dataset.index
-    })
-  }
+      active: +e.target.dataset.index,
+    });
+  };
 
-  render(){
+  render() {
+    const { active } = this.state;
+    const { images } = this.props;
 
-    const {active}  = this.state;
-    const {images} = this.props;
+    return (
+      <div className="carousel">
+        <img src={images[active]} alt="animal hero" />
 
-
-    return <div className='carousel'>
-      <img src={images[active]} alt="animal hero" />
-
-      <div className='carousel-smaller'>
-        {
-          images.map((photo,index)=>(
-
+        <div className="carousel-smaller">
+          {images.map((photo, index) => (
             //eslint-disable-next-line
             <img
-            onClick={this.handleIndexClick}
-            data-index ={index}
-            key={photo} src={photo} alt="animal thumbnail" className={index === active ? "active" : ""}  />
-          ))
-        }
+              onClick={this.handleIndexClick}
+              data-index={index}
+              key={photo}
+              src={photo}
+              alt="animal thumbnail"
+              className={index === active ? "active" : ""}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+    );
   }
 }
-
 
 export default Carousel;

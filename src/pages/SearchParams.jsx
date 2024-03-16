@@ -2,22 +2,22 @@ import { useContext, useState } from "react";
 import Results from "../components/Results";
 import useBreedList from "../hooks/useBreedList";
 const ANIMALS = ["bird", "cat", "dog", "rabbit", "reptile"];
- import { useQuery } from '@tanstack/react-query';
+import { useQuery } from "@tanstack/react-query";
 import fetchSearch from "../query/fetchSearch";
-import AdoptedPetContext from '../context/AdoptedPetContext';
+import AdoptedPetContext from "../context/AdoptedPetContext";
 
 const SearchParams = () => {
   // const [location, setLocation] = useState("Seattle, WA");
-  
+
   const [requestParams, setRequestParams] = useState({
-    location : "", 
-    animal : "",
-    breed : ""
+    location: "",
+    animal: "",
+    breed: "",
   });
 
   const [adoptedPet] = useContext(AdoptedPetContext);
 
-  const animalHook = useState("");
+  const animalHook = useState("dog");
   const animal = animalHook[0];
   const setAnimal = animalHook[1];
 
@@ -34,32 +34,24 @@ const SearchParams = () => {
           e.preventDefault();
           const formData = new FormData(e.target);
 
-          const obj ={ 
-            animal : formData.get('animal') ?? "",
-            breed : formData.get('breed') ?? "",
-            location : formData.get('location') ?? "",
-          }
+          const obj = {
+            animal: formData.get("animal") ?? "",
+            breed: formData.get("breed") ?? "",
+            location: formData.get("location") ?? "",
+          };
 
           setRequestParams(obj);
         }}
       >
-
-{
-  adoptedPet ? (
-    <div className='pet image-container'>
-      <img src={adoptedPet.images[0]} alt={pets.name}/>
-    </div>
-  ): null
-}
-
+        {adoptedPet ? (
+          <div className="pet image-container">
+            <img src={adoptedPet.images[0]} alt={pets.name} />
+          </div>
+        ) : null}
 
         <label htmlFor="location">
           Location
-          <input
-            type="text"
-            id="location"
-            placeholder="Location"
-          />
+          <input type="text" id="location" placeholder="Location" />
         </label>
         <label htmlFor="animal">
           Animal
@@ -72,18 +64,18 @@ const SearchParams = () => {
             }}
           >
             {ANIMALS.map((_animal) => {
-              return <option value={_animal} key={_animal}>{_animal}</option>;
+              return (
+                <option value={_animal} key={_animal}>
+                  {_animal}
+                </option>
+              );
             })}
           </select>
         </label>
 
         <label htmlFor="animal">
           Breed
-          <select
-            disabled={breeds.length <= 0}
-            name="breed"
-            id="breed"
-          >
+          <select disabled={breeds.length <= 0} name="breed" id="breed">
             <option value=""></option>
             {breeds.map((breed) => {
               return <option key={breed}>{breed}</option>;

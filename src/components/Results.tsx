@@ -1,6 +1,11 @@
 import Pet from "./Pet";
+import { Pet as PetType } from "../models/apiResponsesTypes";
 
-const Results = ({ pets }) => {
+interface IProps {
+  pets: PetType[];
+}
+
+const Results = ({ pets }: IProps) => {
   return (
     <div className="search">
       {!pets.length ? (

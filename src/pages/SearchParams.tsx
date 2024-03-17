@@ -1,27 +1,30 @@
 import { useContext, useState } from "react";
 import Results from "../components/Results";
 import useBreedList from "../hooks/useBreedList";
-const ANIMALS = ["bird", "cat", "dog", "rabbit", "reptile"];
- import { useQuery } from '@tanstack/react-query';
+import { useQuery } from "@tanstack/react-query";
 import fetchSearch from "../query/fetchSearch";
-import AdoptedPetContext from '../context/AdoptedPetContext';
+import AdoptedPetContext from "../context/AdoptedPetContext";
+import { Animal, Pet } from "../models/apiResponsesTypes";
+
+const ANIMALS: Animal[] = ["bird", "cat", "dog", "rabbit", "reptile"];
 
 const SearchParams = () => {
   // const [location, setLocation] = useState("Seattle, WA");
-  
+
   const [requestParams, setRequestParams] = useState({
-    location : "", 
-    animal : "",
-    breed : ""
+    location: "",
+    animal: "" as Animal,
+    breed: "",
   });
 
-  const [adoptedPet] = useContext(AdoptedPetContext);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [adoptedPet, _] = useContext(AdoptedPetContext);
 
   const animalHook = useState("");
   const animal = animalHook[0];
   const setAnimal = animalHook[1];
 
-  const [breeds] = useBreedList(animal);
+  const [breeds] = useBreedList(animal as Animal);
 
   const result = useQuery(["search", requestParams], fetchSearch);
 
@@ -32,34 +35,26 @@ const SearchParams = () => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          const formData = new FormData(e.target);
+          const formData = new FormData(e.currentTarget);
 
-          const obj ={ 
-            animal : formData.get('animal') ?? "",
-            breed : formData.get('breed') ?? "",
-            location : formData.get('location') ?? "",
-          }
+          const obj = {
+            animal: (formData.get("animal")?.toString() ?? "") as Animal,
+            breed: formData.get("breed")?.toString() ?? "",
+            location: formData.get("location")?.toString() ?? "",
+          };
 
           setRequestParams(obj);
         }}
       >
-
-{
-  adoptedPet ? (
-    <div className='pet image-container'>
-      <img src={adoptedPet.images[0]} alt={pets.name}/>
-    </div>
-  ): null
-}
-
+        {adoptedPet ? (
+          <div className="pet image-container">
+            <img src={adoptedPet.images[0]} alt={adoptedPet.name} />
+          </div>
+        ) : null}
 
         <label htmlFor="location">
           Location
-          <input
-            type="text"
-            id="location"
-            placeholder="Location"
-          />
+          <input type="text" id="location" placeholder="Location" />
         </label>
         <label htmlFor="animal">
           Animal
@@ -72,18 +67,18 @@ const SearchParams = () => {
             }}
           >
             {ANIMALS.map((_animal) => {
-              return <option value={_animal} key={_animal}>{_animal}</option>;
+              return (
+                <option value={_animal} key={_animal}>
+                  {_animal}
+                </option>
+              );
             })}
           </select>
         </label>
 
         <label htmlFor="animal">
           Breed
-          <select
-            disabled={breeds.length <= 0}
-            name="breed"
-            id="breed"
-          >
+          <select disabled={breeds.length <= 0} name="breed" id="breed">
             <option value=""></option>
             {breeds.map((breed) => {
               return <option key={breed}>{breed}</option>;

@@ -1,30 +1,28 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useQuery } from '@tanstack/react-query';
-import fetchPet from '../query/fetchPet';
-import Carousel from "../components/Carousel"
+
+ import Carousel from "../components/Carousel"
 import ErrorBoundary from "../boundaries/ErrorBoundary";
 import Modal from "../components/Modal"
-import { useState, useContext } from 'react';
-import AdoptedPetContext from '../context/AdoptedPetContext';
+import { useState } from 'react';
+import {useDispatch} from "react-redux";
+import {adopt} from "../store/slice/AdoptedPetSlice"
+import { useGetPetQuery } from '../store/services/petApiService';
 
 const DetailsPageContainer = () => {
   const navigate = useNavigate();
-  // eslint-disable-next-line no-unused-vars
-  const [ _, setAdoptedPet] = useContext(AdoptedPetContext);
-
-
     const [showModal, setShowModal] = useState(false);
 
   const { id } = useParams();
-  const result = useQuery(["details", id], fetchPet);
 
- 
+  const {isLoading, data : pet} = useGetPetQuery(id);
 
-  if(result.isError){
-    return ( <div>Error while fetching</div> );
-  }
+ const dispatch = useDispatch()
 
-  if(result.isLoading){
+  // if(result.isError){
+  //   return ( <div>Error while fetching</div> );
+  // }
+
+  if(isLoading){
     return (
       <div className='loading-pane'>
         <h2 className='loader'>@</h2>
@@ -32,7 +30,6 @@ const DetailsPageContainer = () => {
     )
   }
 
-  const pet = result.data.pets[0];
 
   return <div className="details">
     <Carousel images={pet.images} />
@@ -52,7 +49,7 @@ const DetailsPageContainer = () => {
               <div className='buttons'>
                 <button onClick={
                   ()=>{
-                    setAdoptedPet(pet)
+                     dispatch(adopt(pet))
                     navigate("/")
                   }
                 }>Yes</button>

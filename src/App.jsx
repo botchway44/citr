@@ -5,38 +5,8 @@ import SearchParams from "./pages/SearchParams";
 import DetailsPage from "./pages/Details";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useState,  } from 'react';
-
-import AdoptedPetContext from './context/AdoptedPetContext';
-
-
-// const App = () => {
-//   return React.createElement("div", {}, [
-//     React.createElement("h1", { key: 1 }, "Adopt Me!"),
-//     React.createElement(Pet, {
-//       key: 2,
-//       name: "Luna",
-//       animal: "Dog",
-//       breed: "Havenese",
-//     }),
-//     React.createElement(Pet, {
-//       key: 3,
-//       name: "Pepper",
-//       animal: "Bird",
-//       breed: "Cockatiel",
-//     }),
-//     React.createElement(Pet, {
-//       key: 4,
-//       name: "Doink",
-//       animal: "Cat",
-//       breed: "Mixed",
-//     }),
-//   ]);
-// };
-
-/* <Pet name= "Luna" animal= "Dog" breed= "Havenese" />
-      <Pet name= "Pepper" animal= "Bird" breed= "Cockatiel" />
-      <Pet name= "Doink" animal= "Cat" breed= "Mixed" /> */
+ import {Provider} from "react-redux";
+import store from "./store/store";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -48,13 +18,10 @@ const queryClient = new QueryClient({
 });
 const App = () => {
 
-
-  const adoptedPet = useState(null);
-
   return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <AdoptedPetContext.Provider value={adoptedPet}>
+        <Provider store={store}>
         <header>
           <Link to="/">
             <h1>Adopt Me</h1>
@@ -66,7 +33,7 @@ const App = () => {
           <Route path="/details/:id" element={<DetailsPage />} />
           <Route path="/" element={<SearchParams />} />
         </Routes>
-        </AdoptedPetContext.Provider>
+        </Provider>
       </QueryClientProvider>
     </BrowserRouter>
   );
